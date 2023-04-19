@@ -1,0 +1,21 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Preahvihear';
+  font-style: normal;
+  font-weight: 400;
+  src: url('@/assets/fonts/preahvihear-v27-latin-regular.woff2') format('woff2'),
+    url('@/assets/fonts/preahvihear-v27-latin-regular.woff') format('woff');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Preahvihear'
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
