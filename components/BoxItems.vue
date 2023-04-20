@@ -6,7 +6,7 @@
       <div class>
         <ul class="list list-uz">
           <li v-for="item in arrayUZ" :key="item.id" class="list-item" :value="item.id">
-            <p class="item-title" @click.prevent="uzPart(item.id,$event)">{{ item.en_text }}</p>
+            <p class="item-title" @click.prevent="uzPart(item.id,$event)">{{ item.uz_text }}</p>
             <span class="item-check"></span>
           </li>
         </ul>
@@ -14,7 +14,7 @@
       <div class>
         <ul class="list list-en">
           <li v-for="item in arrayEN" :key="item.id" class="list-item" :value="item.id">
-            <p class="item-title" @click.prevent="enPart(item.id,$event)">{{ item.uz_text }}</p>
+            <p class="item-title" @click.prevent="enPart(item.id,$event)">{{ item.en_text }}</p>
             <span class="item-check"></span>
           </li>
         </ul>
@@ -74,17 +74,21 @@ export default {
           event.target.parentElement.childNodes[0].classList.add('active')
       } else {
         this.allValue = 'uz'
-        
+
         event.target.parentElement.childNodes[0].classList.add('active')
         //id solishtirish
         if (this.enId === id) {
-          let chackItem = event.target.parentElement.childNodes[2]
-          chackItem.style.display = 'block'
+          let chackItem = event.target.parentElement
+          chackItem.childNodes[2].style.display = 'block'
+          chackItem.childNodes[0].classList.remove('active')
+          chackItem.childNodes[0].classList.add('success')
           for (let i = 0; i < this.arrayUZ.length; i++) {
             let listItem = elEnList.childNodes[i]
             if (listItem.value === id) {
               let chackItem = listItem.childNodes[2]
               chackItem.style.display = 'block'
+              listItem.childNodes[0].classList.remove('active')
+              listItem.childNodes[0].classList.add('success')
             }
           }
         } else {
@@ -119,13 +123,17 @@ export default {
         event.target.parentElement.childNodes[0].classList.add('active')
         //id solishtirish
         if (this.uzId === id) {
-          let chackItem = event.target.parentElement.childNodes[2]
-          chackItem.style.display = 'block'
+          let chackItem = event.target.parentElement
+          chackItem.childNodes[2].style.display = 'block'
+          chackItem.childNodes[0].classList.remove('active')
+          chackItem.childNodes[0].classList.add('success')
           for (let i = 0; i < this.arrayUZ.length; i++) {
             let listItem = elUzList.childNodes[i]
             if (listItem.value === id) {
               let chackItem = listItem.childNodes[2]
               chackItem.style.display = 'block'
+              listItem.childNodes[0].classList.remove('active')
+              listItem.childNodes[0].classList.add('success')
             }
           }
         } else {
@@ -164,30 +172,41 @@ export default {
 .list-item {
   position: relative;
 }
+.list-en{
+  margin-left: 30px;
+}
 .item-title {
-  padding: 5px 15px;
+  padding: 16px 80px;
   margin-bottom: 5px;
   border-radius: 50px;
-  background-color: #44db1b;
+  text-align: center;
+ background-color: #2C1250;
+border-bottom: 7px solid #4F228D;
+box-shadow: inset 0px 4px 4px #00000040;
+border-radius: 15px;
+font-weight: 400;
+font-size: 26px;
+line-height: 107.7%;
+color: #fff;
 }
 .item-check {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: rgba(0, 0, 0, 0.434);
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
-  border-radius: 50px;
+  border-radius: 15px;
   left: 0;
   top: 0;
   z-index: 2;
 }
-.sucsess {
-  background-color: blue;
-}
-.default {
-  background-color: #44db1b;
-}
 .active {
-  background-color:#349618 !important;
+  border-bottom: 7px solid  #8c57d7;
+  color: #8c57d7;
+}
+.success {
+  background-color: #E5B8FF;
+border-bottom: 7px solid #4F228D;
+color: #4F228D;
 }
 </style>
