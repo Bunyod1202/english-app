@@ -32,12 +32,8 @@ export default {
       arrayUZ:[],
       arrayEN: [],
       allValue:'',
-      enEvent: null,
-      uzEvent: null,
       enId: null,
       uzId: null,
-      enList: null,
-      uzList: null,
     }
   },
   methods: {
@@ -70,14 +66,15 @@ export default {
       this.uzId = id
       if (this.allValue === 'uz') {
         this.allValue = 'uz';
+        console.log('oxshamad uz');
         for (let i = 0; i < this.arrayUZ.length; i++) {
             let listItem = elUzList.childNodes[i].childNodes[0]
-              listItem.style.backgroundColor  =  '#44db1b'
+              listItem.classList.remove('active')
           }
-        event.target.parentElement.childNodes[0].style.backgroundColor  =  '#349618'
+          event.target.parentElement.childNodes[0].classList.add('active')
       } else {
         this.allValue = 'uz'
-        event.target.parentElement.childNodes[0].style.backgroundColor = '#349618'
+        event.target.parentElement.childNodes[0].classList.add('active')
         //id solishtirish
         if (this.enId === id) {
           let chackItem = event.target.parentElement.childNodes[2]
@@ -86,32 +83,21 @@ export default {
             let listItem = elEnList.childNodes[i]
             if (listItem.value === id) {
               let chackItem = listItem.childNodes[2]
-          chackItem.style.display = 'block'
+              chackItem.style.display = 'block'
             }
           }
         } else {
+          console.log('oxshad lekin yemad uz');
           for (let i = 0; i < this.arrayUZ.length; i++) {
             let listTitle = elEnList.childNodes[i].childNodes[0]
-            let listItemEN = elEnList.childNodes[i]
-            let listItemUZ = elUzList.childNodes[i]
-            console.log(listItemEN.value,this.enId);
-            console.log(listItemUZ.value,this.uzId);
-            if (listItemEN.value === this.enId ) {
-              console.log(listItemEN);
-              this.enId = null
-              listTitle.style.backgroundColor = 'red'
-            }
-            if (listItemUZ.value === this.uzId) {
-              this.uzId = null
-              console.log(listItemUZ);
-              listItemUZ.childNodes[0].style.backgroundColor = 'red'
-            }
+            let listItemUZ = elUzList.childNodes[i].childNodes[0]
+            this.uzId = null;
             setTimeout(() => {
-              listTitle.style.backgroundColor = '#44db1b'
-              listItemUZ.childNodes[0].style.backgroundColor = '#44db1b'
-            },1000)
+              listTitle.classList.remove('active')
+              listItemUZ.classList.remove('active')
+            },500)
           }
-}
+        }
       }
     },
      //item click  en list
@@ -121,14 +107,15 @@ export default {
       this.enId = id
       if (this.allValue === 'en') {
         this.allValue = 'en'
+        console.log('oxshamad en');
         for (let i = 0; i < this.arrayUZ.length; i++) {
             let listItem = elEnList.childNodes[i].childNodes[0]
-              listItem.style.backgroundColor  =  '#44db1b'
+              listItem.classList.remove('active')
           }
-        event.target.parentElement.childNodes[0].style.backgroundColor  =  '#349618'
+        event.target.parentElement.childNodes[0].classList.add('active')
       } else {
         this.allValue = 'en'
-        event.target.parentElement.childNodes[0].style.backgroundColor = '#349618'
+        event.target.parentElement.childNodes[0].classList.add('active')
         //id solishtirish
         if (this.uzId === id) {
           let chackItem = event.target.parentElement.childNodes[2]
@@ -137,31 +124,19 @@ export default {
             let listItem = elUzList.childNodes[i]
             if (listItem.value === id) {
               let chackItem = listItem.childNodes[2]
-          chackItem.style.display = 'block'
+              chackItem.style.display = 'block'
             }
           }
         } else {
+          console.log('oxshad lekin yemad en');
           for (let i = 0; i < this.arrayUZ.length; i++) {
             let listTitle = elUzList.childNodes[i].childNodes[0]
-            let listItemEN = elEnList.childNodes[i]
-            let listItemUZ = elUzList.childNodes[i]
-            if (listItemEN.value === this.enId ) {
-
+            let listItemEN = elEnList.childNodes[i].childNodes[0]
               this.enId = null;
-              console.log(listItemUZ);
-
-              listTitle.style.backgroundColor = 'red'
-            }
-            if (listItemUZ.value === this.uzId) {
-              this.uzId = null;
-              console.log(listItemEN);
-              listItemEN.childNodes[0].style.backgroundColor = 'red'
-            }
             setTimeout(() => {
-              listTitle.style.backgroundColor = '#44db1b'
-              listItemEN.childNodes[0].style.backgroundColor = '#44db1b'
-            },1000)
-
+              listTitle.classList.remove('active')
+              listItemEN.classList.remove('active')
+            },500)
           }
         }
       }
@@ -178,7 +153,6 @@ export default {
 .list-box {
   width: 100%;
   display: flex;
-
 }
 .list {
   width:100%;
@@ -199,11 +173,20 @@ export default {
   width: 100%;
   height: 100%;
   display: none;
-  background-color: blue;
+  background-color: rgba(0, 0, 0, 0.434);
   position: absolute;
   border-radius: 50px;
   left: 0;
   top: 0;
   z-index: 2;
+}
+.sucsess {
+  background-color: blue;
+}
+.default {
+  background-color: #44db1b;
+}
+.active {
+  background-color:#349618 !important;
 }
 </style>
