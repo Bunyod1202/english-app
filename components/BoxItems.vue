@@ -74,6 +74,7 @@ export default {
           event.target.parentElement.childNodes[0].classList.add('active')
       } else {
         this.allValue = 'uz'
+        
         event.target.parentElement.childNodes[0].classList.add('active')
         //id solishtirish
         if (this.enId === id) {
