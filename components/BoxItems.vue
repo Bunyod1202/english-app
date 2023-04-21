@@ -5,17 +5,25 @@
     <div class="list-box">
       <div class>
         <ul class="list list-uz">
-          <li v-for="item in arrayUZ" :key="item.id" class="list-item" :value="item.id">
-            <p class="item-title" @click.prevent="uzPart(item.id,$event)">{{ item.uz_text }}</p>
-            <span class="item-check"></span>
+          <li v-for="item in arrayUZ" :key="item.id" class="list-item">
+            <button
+              class="item-title"
+              @click="itemClickHandler(item.id, 'uz')"
+              :class="{[selectedItemsClass]: ids?.find(elem => elem.id === item.id && elem.lang === 'uz')}"
+              :disabled="successedIds.has(item.id)"
+            >{{ item.uz_text }}</button>
           </li>
         </ul>
       </div>
       <div class>
         <ul class="list list-en">
-          <li v-for="item in arrayEN" :key="item.id" class="list-item" :value="item.id">
-            <p class="item-title" @click.prevent="enPart(item.id,$event)">{{ item.en_text }}</p>
-            <span class="item-check"></span>
+          <li v-for="item in arrayEN" :key="item.id" class="list-item">
+            <button
+              class="item-title"
+              @click="itemClickHandler(item.id, 'en')"
+              :disabled="successedIds.has(item.id)"
+              :class="{[selectedItemsClass]: ids?.find(elem => elem.id === item.id && elem.lang === 'en')}"
+            >{{ item.en_text }}</button>
           </li>
         </ul>
       </div>
@@ -34,6 +42,9 @@ export default {
       allValue:'',
       enId: null,
       uzId: null,
+      ids: [],
+      selectedItemsClass: 'active',
+      successedIds: new Set()
     }
   },
   methods: {
@@ -59,98 +70,44 @@ export default {
         }
       }
     },
-    //item click  uz list
-    uzPart(id, event) {
-      const elEnList = document.querySelector('.list-en')
-      const elUzList = document.querySelector('.list-uz')
-      this.uzId = id
-      if (this.allValue === 'uz') {
-        this.allValue = 'uz';
-        console.log('oxshamad uz');
-        for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listItem = elUzList.childNodes[i].childNodes[0]
-              listItem.classList.remove('active')
-          }
-          event.target.parentElement.childNodes[0].classList.add('active')
-      } else {
-        this.allValue = 'uz'
-
-        event.target.parentElement.childNodes[0].classList.add('active')
-        //id solishtirish
-        if (this.enId === id) {
-          let chackItem = event.target.parentElement
-          chackItem.childNodes[2].style.display = 'block'
-          chackItem.childNodes[0].classList.remove('active')
-          chackItem.childNodes[0].classList.add('success')
-          for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listItem = elEnList.childNodes[i]
-            if (listItem.value === id) {
-              let chackItem = listItem.childNodes[2]
-              chackItem.style.display = 'block'
-              listItem.childNodes[0].classList.remove('active')
-              listItem.childNodes[0].classList.add('success')
-            }
-          }
-        } else {
-          console.log('oxshad lekin yemad uz');
-          for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listTitle = elEnList.childNodes[i].childNodes[0]
-            let listItemUZ = elUzList.childNodes[i].childNodes[0]
-            this.uzId = null;
-            setTimeout(() => {
-              listTitle.classList.remove('active')
-              listItemUZ.classList.remove('active')
-            },500)
-          }
+    //click item
+    itemClickHandler(id, lang) {
+      if (!this.ids.length) {
+        console.log(id, lang);
+        this.ids.push({id, lang})
+        return
+      }
+      if (this.ids.length === 1) {
+        if (this.ids[0].lang === lang) {
+          this.selectedItemsClass = 'error'
+          setTimeout(() => {
+            this.ids = [];
+            this.selectedItemsClass = 'active'
+          }, 1000)
+          return
         }
+        this.ids.push({ id, lang })
+        this.checkIds();
+        return
       }
     },
-     //item click  en list
-    enPart(id, event) {
-      const elUzList = document.querySelector('.list-uz')
-      const elEnList = document.querySelector('.list-en')
-      this.enId = id
-      if (this.allValue === 'en') {
-        this.allValue = 'en'
-        console.log('oxshamad en');
-        for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listItem = elEnList.childNodes[i].childNodes[0]
-              listItem.classList.remove('active')
-          }
-        event.target.parentElement.childNodes[0].classList.add('active')
-      } else {
-        this.allValue = 'en'
-        event.target.parentElement.childNodes[0].classList.add('active')
-        //id solishtirish
-        if (this.uzId === id) {
-          let chackItem = event.target.parentElement
-          chackItem.childNodes[2].style.display = 'block'
-          chackItem.childNodes[0].classList.remove('active')
-          chackItem.childNodes[0].classList.add('success')
-          for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listItem = elUzList.childNodes[i]
-            if (listItem.value === id) {
-              let chackItem = listItem.childNodes[2]
-              chackItem.style.display = 'block'
-              listItem.childNodes[0].classList.remove('active')
-              listItem.childNodes[0].classList.add('success')
-            }
-          }
-        } else {
-          console.log('oxshad lekin yemad en');
-          for (let i = 0; i < this.arrayUZ.length; i++) {
-            let listTitle = elUzList.childNodes[i].childNodes[0]
-            let listItemEN = elEnList.childNodes[i].childNodes[0]
-              this.enId = null;
-            setTimeout(() => {
-              listTitle.classList.remove('active')
-              listItemEN.classList.remove('active')
-            },500)
-          }
-        }
+    checkIds() {
+      if (this.ids[0]?.id === this.ids[1]?.id) {
+        const id = this.ids[0].id
+        this.selectedItemsClass = 'success'
+        setTimeout(() => {
+            this.ids = [];
+            this.selectedItemsClass = 'active'
+            this.successedIds.add(id)
+        }, 1000)
+          return
       }
+      this.selectedItemsClass = 'error'
+      setTimeout(() => {
+            this.ids = [];
+            this.selectedItemsClass = 'active'
+          }, 1000)
     }
-
   },
   mounted() {
     this.enArray(beginner[0].step_1.data)
@@ -158,7 +115,7 @@ export default {
   },
 }
 </script>
-<style>
+<style lang="scss">
 .list-box {
   width: 100%;
   display: flex;
@@ -171,11 +128,29 @@ export default {
 }
 .list-item {
   position: relative;
+  button:disabled {
+    background-color: #E5B8FF;
+    border-bottom: 7px solid #4F228D;
+    color: #4F228D;
+  }
+  .active {
+    border-bottom: 7px solid  #E5B8FF;
+  }
+  .success {
+    background-color: #7CF87A;
+    border-bottom: 7px solid #4F228D;
+    color: #4F228D;
+  }
+  .error {
+    background-color: #D44F4F;
+    border-bottom: 7px solid #fff;
+  }
 }
 .list-en{
   margin-left: 30px;
 }
 .item-title {
+  width: 100%;
   padding: 16px 80px;
   margin-bottom: 5px;
   border-radius: 50px;
@@ -199,14 +174,5 @@ color: #fff;
   left: 0;
   top: 0;
   z-index: 2;
-}
-.active {
-  border-bottom: 7px solid  #8c57d7;
-  color: #8c57d7;
-}
-.success {
-  background-color: #E5B8FF;
-border-bottom: 7px solid #4F228D;
-color: #4F228D;
 }
 </style>
