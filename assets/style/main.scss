@@ -12,10 +12,18 @@
 }
 
 body {
-  font-family: 'Preahvihear'
+  font-family: 'Preahvihear';
+  background-color: #11071F;
 }
 
 button {
   border: none;
   cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  padding: 0 20px;
+  margin: 0 auto;
 }
