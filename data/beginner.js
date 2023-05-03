@@ -1,4 +1,5 @@
-export default [{
+export default [
+  {
     "name": 'unit-1',
     "id": 1,
     "step_1": {
@@ -106,7 +107,7 @@ export default [{
         {
           "id": 17,
           "en_text": "hello",
-          "uz_text": "salom",
+          "uz_text": "assalomu alekum",
           "ru_text": "привет "
         },
         {
