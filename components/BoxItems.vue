@@ -220,7 +220,7 @@ export default {
       width: 200px;
       height: 200px;
       // background-color: #D44F4F;
-      background-image: url('../store/image/b4d0d7e30b0810ff3c0b440d12495dcb.gif');
+      background-image: url('../static/image/b4d0d7e30b0810ff3c0b440d12495dcb.gif');
       background-size: cover;
       position: absolute;
       top: 100px;

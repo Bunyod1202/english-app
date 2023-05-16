@@ -101,7 +101,7 @@ export default {
   border-radius: 50%;
   background-color: #fff;
   box-shadow: inset 5px 15px 4px #00000040;
-  background-image: url('@/store/image/user.png');
+  background-image: url('@/static/image/user.png');
   background-repeat: no-repeat;
   background-size:cover;
   margin: 0 auto;

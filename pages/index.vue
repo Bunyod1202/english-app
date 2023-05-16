@@ -11,15 +11,6 @@ import LoginModal from '../components/LoginModal.vue';
 export default {
     name: "IndexPage",
     components: { BoxItems, LoginModal },
-    data() {
-        return {
-        };
-    },
-    methods: {
-
-    },
-    mounted() {
-    }
 }
 </script>
 <style>
