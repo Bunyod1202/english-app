@@ -10,7 +10,13 @@
 * {
   box-sizing: border-box;
 }
-
+p{
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
 body {
   font-family: 'Preahvihear';
   background-color: #11071F;
