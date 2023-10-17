@@ -1,11 +1,11 @@
 <template>
   <div>
     <ul class="lesson-list">
-      <li  v-for="(item,index) in unitId.data">
-        <button @click="checkLesson(item.data)" class="lesson-item" type="button">
-        <span class="item-header"></span>
+      <li  v-for="(item) in lessons">
+        <button @click="checkLesson(item.id,item?.results[0])" class="lesson-item" type="button">
+        <span class="item-header " :class="item?.results.length? 'item-success':'item-close'">{{ item?.results[0]?.status }}</span>
         <p class="item-text">{{ item.id }}</p>
-        <StarStep :value="1"/>
+        <StarStep :value="item?.results[0]?.rates"/>
         </button>
       </li>
     </ul>
@@ -15,6 +15,7 @@
 <script>
 import StarStep from "~/components/ui/StarStep.vue";
 import Beginner from "~/data/beginner";
+import {mapState} from "vuex";
 export default {
   name:'LessonStep',
   components:{
@@ -22,20 +23,33 @@ export default {
   },
   props:{
     unitId:{
-      type:Object,
+      type:Number,
       default:null
     }
   },
   data(){
     return {
-      data:[]
+      data:[],
+      getLesson: {
+        userId: 1,
+        unitId: this.unitId
+      }
     }
   },
+  async fetch() {
+    await this.$store.dispatch('vocabulary/lessons/fetchLessons',this.getLesson)
+  },
+  computed: {
+    ...mapState({
+      lessons: state => state.vocabulary.lessons.lessons,
+    })
+  },
   methods: {
-    checkLesson(res) {
+    checkLesson(id,result) {
       const data = {
         id: 3,
-        lesson_data: res,
+        lesson_id: id,
+        result:result,
         step_name: 'BoxItems'
       }
       this.$emit('nextStep',data)
@@ -44,7 +58,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.item-success {
+  background-color: #7CF87A;
+  border: 5px solid #418b2c;
+}
+.item-close {
+  background-color: #CB5C70;
+  border: 5px solid #D44F4F;
+}
 .lesson-list{
   display: flex;
   flex-wrap: wrap;

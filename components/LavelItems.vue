@@ -1,29 +1,9 @@
 <template>
   <div>
     <ul class="list">
-      <li class="list-item">
-        <button @click="checkLavel('baginner')" class="list-item__btn item-baginner" type="button">
-          <p class="item-text">Baginner</p>
-        </button>
-      </li>
-      <li class="list-item">
-        <button @click="checkLavel('elementary')" class="list-item__btn item-elementary" type="button">
-          <p class="item-text">Elementary</p>
-        </button>
-      </li>
-      <li class="list-item">
-        <button @click="checkLavel('pre-intermediate')" class="list-item__btn item-pre-intermediate" type="button">
-          <p class="item-text">Pre-Intermediate</p>
-        </button>
-      </li>
-      <li class="list-item">
-        <button @click="checkLavel('intermediate')" class="list-item__btn item-intermediate" type="button">
-          <p class="item-text">Intermediate</p>
-        </button>
-      </li>
-      <li class="list-item">
-        <button @click="checkLavel('upper-intermediate')" class="list-item__btn item-upper-intermediate" type="button">
-          <p class="item-text">Upper-Intermediate</p>
+      <li class="list-item" v-for="(item) in levels"  >
+        <button @click="checkLavel(item.id)" class="list-item__btn" :style="`background-image: url('http://localhost:5000/${item.image}')`" :class="`item-${item.title.toLowerCase()}`"  type="button">
+          <p class="item-text">{{ item.title }}</p>
         </button>
       </li>
     </ul>
@@ -31,14 +11,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
   export default {
     name:'LavelItems',
+    async fetch() {
+      await this.$store.dispatch('vocabulary/levels/fetchLevels')
+    },
+    computed: {
+      ...mapState({
+        levels: state => state.vocabulary.levels.levels,
+      })
+    },
     methods:{
       checkLavel(val){
-        console.log(val,'lavel type')
         const data = {
           id: 1,
-          lavel_type:val,
+          level_id:Number(val),
           step_name: 'UnitLists'
         }
         this.$emit('nextStep',data);
@@ -62,31 +50,31 @@
 }
 .item-baginner {
   background-color: #87E070;
-  background-image: url('@/static/image/lavel/baginner.png');
+  //background-image: url('@/static/image/lavel/baginner.png');
   background-repeat: no-repeat;
   background-position: left -5px top 45px;
 }
 .item-elementary {
   background-color: #7EA8DA;
-  background-image: url('@/static/image/lavel/elementary.png');
+  //background-image: url('@/static/image/lavel/elementary.png');
   background-repeat: no-repeat;
   background-position: left -12px top 10px;
 }
 .item-pre-intermediate {
   background-color: #BE8BC7;
-  background-image: url('@/static/image/lavel/pre-intermediate.png');
+  //background-image: url('@/static/image/lavel/pre-intermediate.png');
   background-repeat: no-repeat;
   background-position: left -16px top 10px;
 }
 .item-intermediate {
   background-color: #CB5C70;
-  background-image: url('@/static/image/lavel/intermediate.png');
+  //background-image: url('@/static/image/lavel/intermediate.png');
   background-repeat: no-repeat;
   background-position: left -22px top 10px;
 }
 .item-upper-intermediate {
   background-color: #E7E97F;
-  background-image: url('@/static/image/lavel/upper-intermediate.png');
+  //background-image: url('@/static/image/lavel/upper-intermediate.png');
   background-repeat: no-repeat;
   background-position: left -22px top 10px;
 }

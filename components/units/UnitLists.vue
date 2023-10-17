@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul class="unit-list">
-      <li class="unit-item" v-for="(item) in data">
+      <li class="unit-item" v-for="(item) in units">
         <button class="btn-unit" @click="checkUnit(item.id)">
-          <p class="unit-text">{{ item.name }}</p>
+          <p class="unit-text">{{ item.title }}</p>
           <span class="unit-box"></span>
         </button>
       </li>
@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import Beginner from "~/data/beginner";
+import {mapState} from "vuex";
 export default {
   name: "UnitLists",
   props: {
-    lavelType:{
-      type: String,
-      default: ""
+    lavelId:{
+      type: Number,
+      default: null
     }
   },
   data(){
@@ -26,19 +26,23 @@ export default {
       data:[]
     }
   },
+  async fetch() {
+    await this.$store.dispatch('vocabulary/units/fetchUnits', this.lavelId)
+  },
+  computed: {
+    ...mapState({
+      units: state => state.vocabulary.units.units,
+    })
+  },
   mounted() {
-    if (this.lavelType == "baginner") {
-      this.data = Beginner
-      console.log(this.lavelType)
-    }
+
   },
   methods:{
     checkUnit(id){
-      console.log(Beginner.find((e) => e.id == id))
       const data = {
         id: 2,
-        lavel_type:this.lavelType,
-        unit_id: Beginner.find((e) => e.id == id),
+        lavel_id:this.lavelId,
+        unit_id: id,
         step_name: 'LessonsStep'
       }
       this.$emit('nextStep',data)

@@ -5,7 +5,7 @@
       <div class="box-caunt">Caunt: {{ caunt }}</div>
       <div class="box-step">
         <p>1</p>
-        <StarStep :value="rasult" />
+        <StarStep :value="rates" />
       </div>
       <div class="box-time">Timer {{minutes}} : {{seconds}}</div>
     </div>
@@ -39,23 +39,29 @@
       </div>
       <div class="disabled-box" :class="'lang-'+listDisabled"></div>
     </div>
+      <button type="button" @click="goBake" class="finish-btn">Finish</button>
   </div>
 </template>
 
 <script>
 import StarStep from './ui/StarStep.vue';
+import {mapState} from "vuex";
 export default {
   name: "BoxItems",
   props:{
-    lessons:{
-     type: Array,
+    lessonId:{
+     type: Number,
      default:[]
+    },
+    result:{
+     type: Object,
+     default:{}
     }
   },
   data() {
     return {
       listDisabled:'',
-      rasult:0,
+      rates:0,
       caunt: 0,
       minutes:0,
       seconds: 20,
@@ -66,6 +72,14 @@ export default {
       selectedItemsClass: "active",
       successedIds: new Set()
     };
+  },
+  async fetch() {
+    await this.$store.dispatch('vocabulary/lessons/fetchLesson',this.lessonId)
+  },
+  computed: {
+    ...mapState({
+      lesson: state => state.vocabulary.lessons.lesson,
+    })
   },
   methods: {
     //random array en
@@ -121,11 +135,11 @@ export default {
         this.selectedItemsClass = "success";
         ++this.caunt
         if (this.caunt > 2 && this.caunt < 4) {
-          ++this.rasult
+          ++this.rates
         } else if (this.caunt > 6 && this.caunt < 8) {
-          ++this.rasult
+          ++this.rates
         } else if (this.caunt > 9 && this.caunt < 11) {
-          ++this.rasult
+          ++this.rates
         }
         this.listDisabled = ""
         setTimeout(() => {
@@ -157,11 +171,48 @@ export default {
     },
     stopTimer() {
       clearInterval(this.myTimer);
+    },
+    async goBake() {
+      if (this.rates !== 3) {
+        const obj = {
+          data:{
+            "lesson_id":Number(this.result.lesson_id),
+            "user_id":1,
+            "status":this.rates === 3? 3 : 2 ,
+            "rates":3
+          },
+          id:this.result.id
+        }
+
+        await this.$store.dispatch('vocabulary/results/editResult',obj)
+      }
+      if (this.lesson) {
+        const obj ={
+          "status":2,
+          "lesson_id":this.lesson.id,
+          "user_id":1,
+          "rates":0
+        }
+        await this.$store.dispatch('vocabulary/results/createResult',obj)
+        const data = {
+          id: 3,
+          lesson_id: this.lessonId,
+          step_name: 'LessonsStep'
+        }
+        this.$emit('nextStep',data)
+      } else {
+        const data = {
+          id: 3,
+          unit_id: 1,
+          step_name: 'UnitLists'
+        }
+        this.$emit('nextStep',data)
+      }
     }
   },
   mounted() {
-    this.enArray(this.lessons);
-    this.uzArray(this.lessons);
+    // this.enArray(this.lessons);
+    // this.uzArray(this.lessons);
     this.startTimer()
   },
   components: { StarStep }
@@ -252,7 +303,22 @@ export default {
     }
   }
 }
-
+.finish-btn {
+  margin-left: 100%;
+  margin-top: auto;
+  padding:7px 70px ;
+  border-radius: 15px;
+  border-top: 7px solid #4F228D;
+  border-bottom: 7px solid #4F228D;
+  background: #7CF87A;
+  color: #4F228D;
+  font-family: Preahvihear;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 107.7%; /* 28.002px */
+  letter-spacing: 0.52px;
+}
 .list-en {
   margin-left: 30px;
 }
