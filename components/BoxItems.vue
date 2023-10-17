@@ -110,7 +110,6 @@ export default {
     itemClickHandler(id, lang) {
        this.listDisabled = lang;
       if (!this.ids.length) {
-        console.log(id, lang);
         this.ids.push({ id, lang });
         return;
       }
@@ -147,7 +146,7 @@ export default {
           this.selectedItemsClass = "active";
           this.successedIds.add(id);
         }, 1000);
-        return;1
+        return;
       }
       this.listDisabled = ""
       this.selectedItemsClass = "error";

@@ -35,7 +35,6 @@ export default {
   },
   methods:{
     nextStep(val){
-      console.log(val)
       this.lavelId = val?.level_id
       this.steps = val.step_name
       this.unitId = val.unit_id
