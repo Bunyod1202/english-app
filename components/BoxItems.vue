@@ -37,17 +37,24 @@
           </li>
         </ul>
       </div>
+      <div class="disabled-box" :class="'lang-'+listDisabled"></div>
     </div>
   </div>
 </template>
 
 <script>
-import beginner from '@/data/beginner'
 import StarStep from './ui/StarStep.vue';
 export default {
   name: "BoxItems",
+  props:{
+    lessons:{
+     type: Array,
+     default:[]
+    }
+  },
   data() {
     return {
+      listDisabled:'',
       rasult:0,
       caunt: 0,
       minutes:0,
@@ -87,6 +94,7 @@ export default {
     },
     //click item
     itemClickHandler(id, lang) {
+       this.listDisabled = lang;
       if (!this.ids.length) {
         console.log(id, lang);
         this.ids.push({ id, lang });
@@ -94,6 +102,7 @@ export default {
       }
       if (this.ids.length === 1) {
         if (this.ids[0].lang === lang) {
+          this.listDisabled = ""
           this.selectedItemsClass = "error";
           setTimeout(() => {
             this.ids = [];
@@ -118,13 +127,15 @@ export default {
         } else if (this.caunt > 9 && this.caunt < 11) {
           ++this.rasult
         }
+        this.listDisabled = ""
         setTimeout(() => {
           this.ids = [];
           this.selectedItemsClass = "active";
           this.successedIds.add(id);
         }, 1000);
-        return;
+        return;1
       }
+      this.listDisabled = ""
       this.selectedItemsClass = "error";
       setTimeout(() => {
         this.ids = [];
@@ -149,8 +160,8 @@ export default {
     }
   },
   mounted() {
-    this.enArray(beginner[0].step_1.data);
-    this.uzArray(beginner[0].step_1.data);
+    this.enArray(this.lessons);
+    this.uzArray(this.lessons);
     this.startTimer()
   },
   components: { StarStep }
@@ -180,7 +191,20 @@ export default {
     width: 100px;
   }
 }
-
+.disabled-box {
+  position: absolute;
+  width: 50%;
+  height: 80%;
+  display: none;
+}
+.lang-uz {
+  left: 0;
+  display:block;
+}
+.lang-en {
+  right:0;
+  display: block;
+}
 .list-box {
   display: flex;
 }

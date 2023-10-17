@@ -73,6 +73,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10000000;
 }
 .modal-card {
   width: 100%;
