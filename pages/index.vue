@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <FirstPage />
-    <LoginModal />
+<!--    <LoginModal />-->
   </div>
 </template>
 

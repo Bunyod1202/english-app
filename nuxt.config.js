@@ -1,5 +1,10 @@
+const apiUrl ='http://localhost:5000/'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    host: 'localhost',
+    port: 3025
+  },
   head: {
     title: 'english-app',
     htmlAttrs: {
@@ -37,7 +42,11 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/element-ui'
+    {
+      src: '@/plugins/element-ui',
+      ssr: true
+    },
+    { src: '@/plugins/global-mixin', ssr: true },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -47,8 +56,13 @@ export default {
   buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
-
+  modules: [
+    '@nuxtjs/axios',
+  ],
+  axios: {
+    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+    baseURL: apiUrl
+  },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],

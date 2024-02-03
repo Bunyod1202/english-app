@@ -3,9 +3,10 @@
     <keep-alive>
       <component
         :is="steps"
-        :lavelType="lavelType"
+        :lavelId="lavelId"
         :unit-id="unitId"
-        :lessons="lessons"
+        :result="result"
+        :lessonId="lessonId"
         @nextStep="nextStep"
       />
     </keep-alive>
@@ -26,18 +27,20 @@ export default {
   data(){
     return {
       steps:'LavelItems',
-      lavelType: '',
+      lavelId: null,
       unitId: null,
-      lessons: null,
+      lessonId: null,
+      result: null,
     }
   },
   methods:{
     nextStep(val){
       console.log(val)
-      this.lavelType = val?.lavel_type
+      this.lavelId = val?.level_id
       this.steps = val.step_name
       this.unitId = val.unit_id
-      this.lessons = val.lesson_data
+      this.lessonId = val.lesson_id
+      this.result = val.result
     }
   }
 }

@@ -8,7 +8,7 @@
       Bu oyinni boshlab siz soz yod olib va shu sozlarga
       gaplar tuzishini organasiz
     </p>
-    <button @click="$router.push('/StepGroup')" class="start-btn" type="button">start</button>
+    <button @click="$router.push('/word-desfination')" class="start-btn" type="button">start</button>
   </div>
 </template>
 
